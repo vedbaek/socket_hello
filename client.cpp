@@ -25,7 +25,7 @@ int main() {
 	server_addr.sin_port = htons(server_port);
 
 	// 3. 连接服务器
-	if (connect(client_socket, (sockaddr*)&server_addr, sizeof(server_addr) == -1)) {
+	if (connect(client_socket, (sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
 		std::cerr << "Failed to connect to server" << endl;
 		return 1;
 	}
