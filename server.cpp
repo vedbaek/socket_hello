@@ -13,6 +13,7 @@ int main() {
 		std::cerr << "Failed to create socket" << endl;
 		return 1;
 	}
+	cout << "Socket created!" << endl;
 
 	// 2. 设置socket地址
 	sockaddr_in server_addr{}, client_addr{};
@@ -27,12 +28,14 @@ int main() {
 		close(server_socket);
 		return 1;
 	}
+	cout << "Socket binded!" << endl;
 
 	// 4. 开始监听
 	if (listen(server_socket, SOMAXCONN) == -1) {
 		std::cerr << "Failed to listen on socket" << endl;
 		return 1;
 	}
+	cout << "Listenning..." << endl;
 
 	// 5. 等待连接
 	socklen_t client_len = sizeof(client_addr);
@@ -41,6 +44,7 @@ int main() {
 		std::cerr << "Failed to accept connection" << endl;
 		return 1;
 	}
+	cout << "Client accepted!" << endl;
 
 	// 6. 从客户端接收数据
 	char buff[1024]{};
@@ -51,6 +55,7 @@ int main() {
 		close(server_socket);
 		return 1;
 	}
+	cout << "Message from client: " << buff << endl;
 
 	// 7. 发送响应给客户端
 	string msg = "Hello from server";
@@ -60,6 +65,7 @@ int main() {
 		close(server_socket);
 		return 1;
 	}
+	cout << "Message sent to client" << endl;
 
 	// 8. 关闭socket
 	close(client_socket);

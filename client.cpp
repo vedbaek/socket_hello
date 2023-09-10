@@ -14,6 +14,7 @@ int main() {
 		cout << "Failed to create socket" << endl;
 		return 1;
 	}
+	cout << "Socket created" << endl;
 
 	// 2. 设置socket地址
 	sockaddr_in server_addr{};
@@ -28,6 +29,7 @@ int main() {
 		std::cerr << "Failed to connect to server" << endl;
 		return 1;
 	}
+	cout << "Connected to server" << endl;
 
 	// 4. 发送数据
 	string msg = "Hello from client!";
@@ -35,6 +37,7 @@ int main() {
 		std::cerr << "Failed to send data: " << msg << endl;
 		return 1;
 	}
+	cout << "Message sent" << endl;
 
 	// 5. 等待响应
 	char buff[1024]{};
