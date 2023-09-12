@@ -154,3 +154,156 @@ setsockopt(fd, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval));
 int cnt = 9;
 setsockopt(fd, IPPROTO_TCP, TCP_KEEPCNT, &cnt, sizeof(cnt));
 ```
+
+
+# addrinfo
+```
+struct addrinfo {
+    int ai_flags;           // 地址标志
+    int ai_family;          // 地址族
+    int ai_socktype;        // 套接字类型
+    int ai_protocol;        // 协议
+    socklen_t ai_addrlen;   // 地址长度
+    struct sockaddr* ai_addr;  // 地址数据结构
+    char* ai_canonname;     // 规范主机名
+    struct addrinfo* ai_next;   // 指向下一个结果的指针
+};
+```
+* ai_flags指定了一些地址获取的选项标志，如AI_PASSIVE表示适用于服务器端。
+* ai_family指定了地址族（Address Family），例如AF_INET表示IPv4，AF_INET6表示IPv6。
+* ai_socktype指定了套接字类型（Socket Type），如SOCK_STREAM表示流式套接字。
+* ai_protocol指定了套接字使用的协议（Protocol），如IPPROTO_TCP表示TCP协议。
+* ai_addrlen是地址长度（Address Length）。
+* ai_addr指向sockaddr结构体的指针，包含了实际的地址信息。
+* ai_canonname是规范主机名（Canonical Host Name），即主机名的规范格式。
+* ai_next是一个指向下一个addrinfo结构体的指针，用于遍历多个结果。
+
+ai_flags（地址标志）：
+    取值范围：可以使用零或以下标志的按位或组合：
+        AI_PASSIVE：适用于服务器端，表示用于监听连接的地址。
+        AI_CANONNAME：返回一个规范主机名。
+    含义：指定地址获取的选项标志。
+
+ai_family（地址族）：
+    取值范围：
+        AF_UNSPEC：不限定地址族，允许IPv4或IPv6。
+        AF_INET：IPv4地址族。
+        AF_INET6：IPv6地址族。
+    含义：指定地址族类型。
+
+ai_socktype（套接字类型）：
+    取值范围：
+        SOCK_STREAM：流式套接字，提供可靠的、面向连接的通信。
+        SOCK_DGRAM：数据报套接字，提供不可靠的、无连接的通信。
+        SOCK_RAW：原始套接字，提供对网络层以上协议的直接访问。
+    含义：指定套接字类型。
+
+ai_protocol（协议）：
+    取值范围：根据套接字类型的不同，可以使用协议号常量（如IPPROTO_TCP、IPPROTO_UDP）或设置为零表示默认协议。
+    含义：指定套接字使用的协议。
+
+ai_addrlen（地址长度）：
+    取值范围：某个特定平台上地址结构体的大小。
+    含义：指定地址长度。
+
+ai_addr（地址数据结构）：
+    取值范围：指向一个sockaddr结构体的指针，其中存储了实际的地址信息。
+    含义：指定地址信息。
+
+ai_canonname（规范主机名）：
+    取值范围：字符串指针，可能为NULL。
+    含义：返回规范化的主机名。
+
+ai_next（下一个结果）：
+    取值范围：指向下一个addrinfo结构体的指针，可能为NULL。
+    含义：用于遍历多个解析结果，形成链表。
+
+
+# struct sockaddr
+```
+struct sockaddr {
+    sa_family_t sa_family;  // 地址族，用于指定地址的类型
+    char sa_data[14];       // 地址数据，具体内容与地址族相关
+};
+```
+
+sa_family：
+    类型：sa_family_t
+    取值范围：根据地址族的不同而变化，常见的取值有 AF_INET（IPv4）、AF_INET6（IPv6）和 AF_UNIX（Unix 域）
+    含义：用于指定地址的类型或族，决定了 sa_data 字段中存储的具体地址数据的形式。
+
+sa_data：
+    类型：char[14]
+    取值范围：具体内容与地址族相关，不同的地址族可能会使用不同的数据结构存储地址信息。
+    含义：存储地址的实际数据，其格式和含义取决于地址族类型。例如，在 IPv4 地址族中，前4个字节存储 IP 地址，后2个字节存储端口号。
+
+需要注意的是，struct sockaddr 是一个通用的结构体，在实际编程中，可能会使用它的具体派生类型来表示特定类型的地址，如 struct sockaddr_in 用于表示 IPv4 地址，struct sockaddr_in6 用于表示 IPv6 地址，struct sockaddr_un 用于表示 Unix 域地址等。这些派生类型在具体应用场景中定义了更多的字段，以便存储相应地址族的具体信息。
+
+## struct sockaddr_in
+```
+struct sockaddr_in {
+    sa_family_t     sin_family; // 地址族，通常为 AF_INET（IPv4）
+    in_port_t       sin_port;   // 16 位端口号
+    struct in_addr  sin_addr;   // 32 位 IP 地址
+    char            sin_zero[8]; // 填充字段，通常设置为全 0
+};
+```
+
+sin_family 字段：
+    取值范围：AF_INET（IPv4 地址族）。
+    含义：指定地址族类型，用于确定 sockaddr_in 结构体的具体含义。
+sin_port 字段：
+    取值范围：0~65535。
+    含义：表示 IPv4 地址中的 16 位端口号。
+sin_addr 字段：
+    类型：struct in_addr
+    取值范围：32 位无符号整数。
+    含义：表示 IPv4 地址中的 32 位 IP 地址。
+sin_zero 字段：
+    类型：char[8]
+    取值范围：没有特殊限制。
+    含义：用于填充字段，通常设置为全 0。
+
+## struct sockaddr_in6
+```
+struct sockaddr_in6 {
+    sa_family_t     sin6_family;   // 地址族，通常为 AF_INET6（IPv6）
+    in_port_t       sin6_port;     // 16 位端口号
+    uint32_t        sin6_flowinfo; // 流信息
+    struct in6_addr sin6_addr;     // 128 位 IPv6 地址
+    uint32_t        sin6_scope_id; // 作用域 ID
+};
+```
+
+sin6_family 字段：
+    取值范围：AF_INET6（IPv6 地址族）。
+    含义：指定地址族类型，用于确定 sockaddr_in6 结构体的具体含义。
+sin6_port 字段：
+    取值范围：0~65535。
+    含义：表示 IPv6 地址中的 16 位端口号。
+sin6_flowinfo 字段：
+    取值范围：32 位无符号整数。
+    含义：用于流控制和服务质量(QoS)相关的标识。
+sin6_addr 字段：
+    类型：struct in6_addr
+    取值范围：128 位二进制数，表示 IPv6 地址。
+    含义：表示 IPv6 地址中的 128 位 IP 地址。
+sin6_scope_id 字段：
+    取值范围：32 位无符号整数。
+    含义：用于指定接口的作用域 ID，通常在连接到链接本地地址时使用。
+
+## struct sockaddr_un
+```
+struct sockaddr_un {
+    sa_family_t sun_family; // 地址族，通常为 AF_UNIX（Unix 域）
+    char        sun_path[108]; // 文件路径名
+};
+```
+
+sun_family 字段：
+    取值范围：AF_UNIX（Unix 域地址族）。
+    含义：指定地址族类型，用于确定 sockaddr_un 结构体的具体含义。
+sun_path 字段：
+    类型：char[108]
+    取值范围：没有特殊限制。
+    含义：表示 Unix 域套接字对应文件的路径名。
