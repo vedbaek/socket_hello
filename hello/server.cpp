@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include <arpa/inet.h> // inet_pton() 和 inet_ntop() 函数，用于进行 IP 地址的二进制和字符串的转换
+#include <unistd.h> // close()，用于关闭文件描述符，包括套接字
 #include <string>
 
 using namespace std;
