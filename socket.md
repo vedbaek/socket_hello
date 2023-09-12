@@ -125,3 +125,32 @@
 4. 报文交互：心跳包通常是双向的，需要对方节点接收并回复。通过心跳包的交互，可以确保连接的双向通信的正常性，而不仅是简单地检查连接状态。
 
 总的来说，尽管可以使用getsockopt函数来检测TCP连接的状态，但设计心跳包可以提供更实时、可靠和灵活的连接监测和维护。它可以应对一些特殊情况下的网络限制，并允许应用层控制和自定义。
+
+# 心跳包机制
+https://zhuanlan.zhihu.com/p/626960589
+* 长时间没有数据往来，可能会被防火墙程序关闭连接
+* 连接链路中的关键路由器或者交换机故障，无法及时感知到连接是否正常，即“死链”问题
+
+- 心跳包可用来保活以及检测死链（及时关闭socket，回收连接资源）
+- 一般客户端应主动给服务端端发送心跳包，服务端应答心跳包
+- 心跳包也可以携带一些业务数据
+- 心跳包间隔可按需设置15s-45s不等
+
+## TCP keepalive 选项
+```
+//on 是 1 表示打开 keepalive 选项，为 0 表示关闭，0 是默认值
+int on = 1;
+setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &on, sizeof(on))
+
+//发送 keepalive 报文的时间间隔
+int val = 7200;
+setsockopt(fd, IPPROTO_TCP, TCP_KEEPIDLE, &val, sizeof(val));
+
+//两次重试报文的时间间隔
+int interval = 75;
+setsockopt(fd, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval));
+
+// 如果重试 9 次（TCP_KEEPCNT 值）（前后重试间隔为 75 秒（TCP_KEEPINTVL 值））仍然不可达，则向应用程序返回 ETIMEOUT（无任何应答）或 EHOST 错误信息。
+int cnt = 9;
+setsockopt(fd, IPPROTO_TCP, TCP_KEEPCNT, &cnt, sizeof(cnt));
+```
