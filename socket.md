@@ -1,3 +1,9 @@
+# 系统调用与函数调用有什么区别
+https://mp.weixin.qq.com/s/iB5HzcjTRNcpgJi8FKLj_w
+* 函数调用对应系统指令为call + 指令执行地址
+* 系统调用对应为syscall + 指令序号
+* 如果call执行了一个系统函数地址，cpu会判断当前进程没有权限，没有的话会被kill掉
+* 系统调用时cpu会进入专用的内核栈区，每个进程都有两个栈，一个系统栈，一个用户栈，分别对应内核态和用户态
 
 # 肉桂卷01
 https://www.xiaohongshu.com/explore/6358b8dd000000001502e9ef
