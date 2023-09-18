@@ -1,3 +1,26 @@
+# C++高性能网络编程
+https://huangwang.github.io/2019/10/26/CPlusPlus%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/
+
+## socket类型
+* SOCK_STREAM   tcp
+* SOCK_DGRAM    udp
+* SOCK_RAW      raw，可以指定IP头部
+
+## socket通信流程
+### TCP
+* Server：socket() -> bind() -> listen() -> accept() -> read() -> write() -> close()
+* Client：socket() -> connect() -> write() -> read() -> close()
+
+### UDP
+* Server：socket() -> bind() -> recvfrom() -> sendto() -> close()
+* Client：socket() -> sendto() -> recvfrom() -> close()
+
+# 来自C++之父Bjarne Stroustrup的人生建议
+https://mp.weixin.qq.com/s/UXboQwm8JJ01pqZNUTFkXw
+* 不要过度专业化，不要太笃定自己的未来
+* 不能只写代码，花时间拥有平衡的生活
+* 为机会做好准备，接受基础广泛的教育，基础广泛的技能
+
 # 系统调用与函数调用有什么区别
 https://mp.weixin.qq.com/s/iB5HzcjTRNcpgJi8FKLj_w
 * 函数调用对应系统指令为call + 指令执行地址
