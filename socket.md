@@ -7,6 +7,10 @@ https://huangwang.github.io/2019/10/26/CPlusPlus%E9%AB%98%E6%80%A7%E8%83%BD%E7%B
 * SOCK_RAW      raw，可以指定IP头部
 
 ## socket通信流程
+* TCP和UDP互不干扰，系统可以同时开启TCP和UDP的80端口
+* socket不属于任何一层网络协议，它只是对tcp层的封装
+* 注意字节序转换，htonl/htons 或 ntohl/ntohs
+
 ### TCP
 * Server：socket() -> bind() -> listen() -> accept() -> read() -> write() -> close()
 * Client：socket() -> connect() -> write() -> read() -> close()
@@ -14,6 +18,19 @@ https://huangwang.github.io/2019/10/26/CPlusPlus%E9%AB%98%E6%80%A7%E8%83%BD%E7%B
 ### UDP
 * Server：socket() -> bind() -> recvfrom() -> sendto() -> close()
 * Client：socket() -> sendto() -> recvfrom() -> close()
+
+## 同步阻塞模型
+* 没有客户端连接则阻塞在accept
+* 和客户端同步消息时会阻塞在read和write
+
+## 多进程并发模型
+* 有客户端连接时，开启新的进程来处理与这个客户端的数据交互
+* 连接数多时服务端负担过重
+
+## 多线程并发模型
+
+## IO多路复用模型
+
 
 # 来自C++之父Bjarne Stroustrup的人生建议
 https://mp.weixin.qq.com/s/UXboQwm8JJ01pqZNUTFkXw
