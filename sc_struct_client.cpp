@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <iostream>
 
 #define SERVER_IP "127.0.0.1"
 #define PORT 12345
@@ -20,6 +21,10 @@ struct MessageHeader
   MessageType type;
   int size;
 };
+
+std::ostream& operator<<(std::ostream &os, const MessageHeader &header) {
+  return os << "MessageType: " << header.type << ", size: " << header.size;
+}
 
 struct Person
 {
@@ -160,7 +165,7 @@ int main()
       break;
     }
 
-    std::cout << "服务器响应：" << header.type << ", " << header
+    std::cout << "服务器响应：" << header.type << ", " << header;
   }
 
   // 关闭客户端套接字
