@@ -10,28 +10,33 @@
 #define PORT 12345
 
 // 消息类型枚举
-enum MessageType {
+enum MessageType
+{
     PERSON,
     ANIMAL,
     CAR
 };
 
-struct MessageHeader {
+struct MessageHeader
+{
     MessageType type;
     int size;
 };
 
-struct Person {
+struct Person
+{
     std::string name;
     int age;
 };
 
-struct Animal {
+struct Animal
+{
     std::string species;
     float weight;
 };
 
-struct Car {
+struct Car
+{
     std::string brand;
     int year;
 };
@@ -93,54 +98,54 @@ int main()
 
         switch (choice)
         {
-            case 1:
-            {
-                // 构造 Person 结构体
-                Person person;
-                std::cout << "请输入姓名：";
-                std::getline(std::cin, person.name);
-                std::cout << "请输入年龄：";
-                std::cin >> person.age;
-                std::cin.ignore();
+        case 1:
+        {
+            // 构造 Person 结构体
+            Person person;
+            std::cout << "请输入姓名：";
+            std::getline(std::cin, person.name);
+            std::cout << "请输入年龄：";
+            std::cin >> person.age;
+            std::cin.ignore();
 
-                header.type = PERSON;
-                header.size = sizeof(person);
-                memcpy(buffer, &person, sizeof(person));
-                break;
-            }
-            case 2:
-            {
-                // 构造 Animal 结构体
-                Animal animal;
-                std::cout << "请输入物种：";
-                std::getline(std::cin, animal.species);
-                std::cout << "请输入重量：";
-                std::cin >> animal.weight;
-                std::cin.ignore();
+            header.type = PERSON;
+            header.size = sizeof(person);
+            memcpy(buffer, &person, sizeof(person));
+            break;
+        }
+        case 2:
+        {
+            // 构造 Animal 结构体
+            Animal animal;
+            std::cout << "请输入物种：";
+            std::getline(std::cin, animal.species);
+            std::cout << "请输入重量：";
+            std::cin >> animal.weight;
+            std::cin.ignore();
 
-                header.type = ANIMAL;
-                header.size = sizeof(animal);
-                memcpy(buffer, &animal, sizeof(animal));
-                break;
-            }
-            case 3:
-            {
-                // 构造 Car 结构体
-                Car car;
-                std::cout << "请输入品牌：";
-                std::getline(std::cin, car.brand);
-                std::cout << "请输入年份：";
-                std::cin >> car.year;
-                std::cin.ignore();
+            header.type = ANIMAL;
+            header.size = sizeof(animal);
+            memcpy(buffer, &animal, sizeof(animal));
+            break;
+        }
+        case 3:
+        {
+            // 构造 Car 结构体
+            Car car;
+            std::cout << "请输入品牌：";
+            std::getline(std::cin, car.brand);
+            std::cout << "请输入年份：";
+            std::cin >> car.year;
+            std::cin.ignore();
 
-                header.type = CAR;
-                header.size = sizeof(car);
-                memcpy(buffer, &car, sizeof(car));
-                break;
-            }
-            default:
-                std::cout << "无效选择，请重新输入" << std::endl;
-                continue;
+            header.type = CAR;
+            header.size = sizeof(car);
+            memcpy(buffer, &car, sizeof(car));
+            break;
+        }
+        default:
+            std::cout << "无效选择，请重新输入" << std::endl;
+            continue;
         }
 
         // 发送消息头和结构体数据给服务器

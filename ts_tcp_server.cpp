@@ -9,28 +9,33 @@
 #define PORT 12345
 
 // 消息类型枚举
-enum MessageType {
+enum MessageType
+{
     PERSON,
     ANIMAL,
     CAR
 };
 
-struct MessageHeader {
+struct MessageHeader
+{
     MessageType type;
     int size;
 };
 
-struct Person {
+struct Person
+{
     std::string name;
     int age;
 };
 
-struct Animal {
+struct Animal
+{
     std::string species;
     float weight;
 };
 
-struct Car {
+struct Car
+{
     std::string brand;
     int year;
 };
@@ -64,30 +69,30 @@ void handleClient(int clientSocket)
         // 处理接收到的结构体数据
         switch (header.type)
         {
-            case PERSON:
-            {
-                Person person;
-                memcpy(&person, buffer, sizeof(person));
-                std::cout << "收到 Person 结构体消息：" << person.name << ", " << person.age << "岁" << std::endl;
-                break;
-            }
-            case ANIMAL:
-            {
-                Animal animal;
-                memcpy(&animal, buffer, sizeof(animal));
-                std::cout << "收到 Animal 结构体消息：" << animal.species << ", " << animal.weight << "kg" << std::endl;
-                break;
-            }
-            case CAR:
-            {
-                Car car;
-                memcpy(&car, buffer, sizeof(car));
-                std::cout << "收到 Car 结构体消息：" << car.brand << ", " << car.year << std::endl;
-                break;
-            }
-            default:
-                std::cerr << "未知的消息类型" << std::endl;
-                break;
+        case PERSON:
+        {
+            Person person;
+            memcpy(&person, buffer, sizeof(person));
+            std::cout << "收到 Person 结构体消息：" << person.name << ", " << person.age << "岁" << std::endl;
+            break;
+        }
+        case ANIMAL:
+        {
+            Animal animal;
+            memcpy(&animal, buffer, sizeof(animal));
+            std::cout << "收到 Animal 结构体消息：" << animal.species << ", " << animal.weight << "kg" << std::endl;
+            break;
+        }
+        case CAR:
+        {
+            Car car;
+            memcpy(&car, buffer, sizeof(car));
+            std::cout << "收到 Car 结构体消息：" << car.brand << ", " << car.year << std::endl;
+            break;
+        }
+        default:
+            std::cerr << "未知的消息类型" << std::endl;
+            break;
         }
 
         // 发送响应给客户端
