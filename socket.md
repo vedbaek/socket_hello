@@ -1,6 +1,12 @@
 # C++高性能网络编程
 https://huangwang.github.io/2019/10/26/CPlusPlus%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/
 
+# 粘包问题（Packet Concatenation Problem）
+Q: 什么是粘包问题，请提供一个解决粘包问题的c++例子，需要包含服务端和客户端，要求可以在Linux环境运行，不能使用固定长度或者特殊分隔符这两种方法
+A: 粘包问题（Packet Concatenation Problem）是指在网络通信中，由于数据传输的特性，多个数据包可能会连在一起形成一个较大的数据块，导致接收方无法正确解析和处理这些数据。
+
+要解决粘包问题，可以使用消息长度字段来表示每个数据包的长度，以便接收方可以准确地切分数据。下面是一个使用消息长度字段解决粘包问题的 C++ 示例，涉及一个基于 TCP 协议的服务端和客户端
+
 ## socket类型
 * SOCK_STREAM   tcp
 * SOCK_DGRAM    udp
