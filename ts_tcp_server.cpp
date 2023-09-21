@@ -3,6 +3,12 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <netinet/in.h> // hton/ntoh
+
+float ntohf(float value) {
+    uint32_t temp = ntohl(*((uint32_t *)&value));
+    return *((float *)&temp);
+}
 
 // 结构体类型
 enum MessageType
@@ -41,50 +47,54 @@ void handleClient(int clientSocket)
     while (true)
     {
         MessageType type;
-        memset(&type, 0, sizeof(type));
-        bytesRead = recv(clientSocket, &type, sizeof(type), 0);
+        bytesRead = read(clientSocket, &type, sizeof(type));
 
         if (bytesRead <= 0)
         {
             break;
         }
 
+        type = (MessageType)ntohl((unsigned int)type);
+
         if (type == PERSON)
         {
             Person person;
-            memset(&person, 0, sizeof(person));
-            bytesRead = recv(clientSocket, &person, sizeof(person), 0);
+            bytesRead = read(clientSocket, &person, sizeof(person));
 
             if (bytesRead <= 0)
             {
                 break;
             }
+
+            person.age = ntohl(person.age);
 
             std::cout << "Received Person: " << person.name << ", " << person.age << " years old" << std::endl;
         }
         else if (type == ANIMAL)
         {
             Animal animal;
-            memset(&animal, 0, sizeof(animal));
-            bytesRead = recv(clientSocket, &animal, sizeof(animal), 0);
+            bytesRead = read(clientSocket, &animal, sizeof(animal));
 
             if (bytesRead <= 0)
             {
                 break;
             }
+
+            animal.weight = ntohf(animal.weight);
 
             std::cout << "Received Animal: " << animal.species << ", " << animal.weight << "kg" << std::endl;
         }
         else if (type == CAR)
         {
             Car car;
-            memset(&car, 0, sizeof(car));
-            bytesRead = recv(clientSocket, &car, sizeof(car), 0);
+            bytesRead = read(clientSocket, &car, sizeof(car));
 
             if (bytesRead <= 0)
             {
                 break;
             }
+
+            car.year = ntohl(car.year);
 
             std::cout << "Received Car: " << car.brand << ", " << car.year << std::endl;
         }
