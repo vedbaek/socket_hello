@@ -1,11 +1,14 @@
 #include <iostream>
+#include <thread>
+#include <chrono>
 #include <cstring>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-float htonf(float value) {
+float htonf(float value)
+{
     uint32_t temp = htonl(*((uint32_t *)&value));
     return *((float *)&temp);
 }
@@ -64,35 +67,40 @@ int main()
         return -1;
     }
 
-    // 发送 Person 结构体
-    MessageType type = PERSON;
-    type = (MessageType)htonl((unsigned int)type);
-    write(clientSocket, &type, sizeof(type));
+    while (true)
+    {
+        // 发送 Person 结构体
+        MessageType type = PERSON;
+        type = (MessageType)htonl((unsigned int)type);
+        write(clientSocket, &type, sizeof(type));
 
-    Person person;
-    strncpy(person.name, "John", sizeof(person.name));
-    person.age = htonl(30);
-    write(clientSocket, &person, sizeof(person));
+        Person person;
+        strncpy(person.name, "John", sizeof(person.name));
+        person.age = htonl(30);
+        write(clientSocket, &person, sizeof(person));
 
-    // 发送 Animal 结构体
-    type = ANIMAL;
-    type = (MessageType)htonl((unsigned int)type);
-    write(clientSocket, &type, sizeof(type));
+        // 发送 Animal 结构体
+        type = ANIMAL;
+        type = (MessageType)htonl((unsigned int)type);
+        write(clientSocket, &type, sizeof(type));
 
-    Animal animal;
-    strncpy(animal.species, "Lion", sizeof(animal.species));
-    animal.weight = htonf(222.555555f);
-    write(clientSocket, &animal, sizeof(animal));
+        Animal animal;
+        strncpy(animal.species, "Lion", sizeof(animal.species));
+        animal.weight = htonf(222.555555f);
+        write(clientSocket, &animal, sizeof(animal));
 
-    // 发送 Car 结构体
-    type = CAR;
-    type = (MessageType)htonl((unsigned int)type);
-    write(clientSocket, &type, sizeof(type));
+        // 发送 Car 结构体
+        type = CAR;
+        type = (MessageType)htonl((unsigned int)type);
+        write(clientSocket, &type, sizeof(type));
 
-    Car car;
-    strncpy(car.brand, "Toyota", sizeof(car.brand));
-    car.year = htonl(2022);
-    write(clientSocket, &car, sizeof(car));
+        Car car;
+        strncpy(car.brand, "Toyota", sizeof(car.brand));
+        car.year = htonl(2022);
+        write(clientSocket, &car, sizeof(car));
+
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
 
     // 关闭客户端套接字
     close(clientSocket);
