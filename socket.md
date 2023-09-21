@@ -1,6 +1,55 @@
 # C++高性能网络编程
 https://huangwang.github.io/2019/10/26/CPlusPlus%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/
 
+# cmake 设置debug模式
+```
+cmake -DCMAKE_BUILD_TYPE=Debug -B build
+或者
+set(CMAKE_BUILD_TYPE "Debug")
+```
+
+# Linux环境崩溃生成core文件以及调试 
+https://www.cnblogs.com/jing1617/p/8486407.html
+https://www.cnblogs.com/zhanggaofeng/p/11945972.html
+https://www.answerywj.com/2022/12/20/generate-and-usage-of-core-in-linux
+```
+# 确认当前会话是否支持产生core文件，0表示不会
+ulimit –c
+
+# 打开coredump
+ulimit -c unlimited
+
+# 修改coredump文件名格式及存储路径
+# %e 可执行文件名
+# %p pid
+# %t unix时间戳
+echo /tmp/core.%e.%p.%t > /proc/sys/kernel/core_pattern
+
+# 用gdb打开程序后再加载coredump, bt查看堆栈
+gdb ./test
+core-file ./core
+bt
+```
+
+# wsl以root启动
+https://www.jianshu.com/p/e43e11d6ba09
+```
+# 以root身份登陆
+wsl --user root
+
+# 列出已注册wsl子系统
+wslconfig /l
+
+# 以root身份登陆指定子系统
+wsl -d kali-linux --user root
+```
+
+# 端口复用问题
+```
+int opt = 1;
+setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, (const void *)&opt, sizeof(opt));
+```
+
 # 粘包问题（Packet Concatenation Problem）
 Q: 什么是粘包问题，请提供一个解决粘包问题的c++例子，需要包含服务端和客户端，要求可以在Linux环境运行，不能使用固定长度或者特殊分隔符这两种方法
 A: 粘包问题（Packet Concatenation Problem）是指在网络通信中，由于数据传输的特性，多个数据包可能会连在一起形成一个较大的数据块，导致接收方无法正确解析和处理这些数据。
