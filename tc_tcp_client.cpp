@@ -5,37 +5,43 @@
 #include <sys/socket.h>
 
 // 结构体类型
-enum MessageType {
+enum MessageType
+{
     PERSON,
     ANIMAL,
     CAR
 };
 
 // Person 结构体
-struct Person {
+struct Person
+{
     char name[20];
     int age;
 };
 
 // Animal 结构体
-struct Animal {
+struct Animal
+{
     char species[20];
     float weight;
 };
 
 // Car 结构体
-struct Car {
+struct Car
+{
     char brand[20];
     int year;
 };
 
-int main() {
+int main()
+{
     int clientSocket;
     struct sockaddr_in serverAddress;
 
     // 创建套接字
     clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (clientSocket == -1) {
+    if (clientSocket == -1)
+    {
         std::cerr << "Failed to create socket" << std::endl;
         return -1;
     }
@@ -43,10 +49,11 @@ int main() {
     // 设置服务器地址和端口
     serverAddress.sin_family = AF_INET;
     serverAddress.sin_addr.s_addr = inet_addr("127.0.0.1"); // 服务器 IP 地址
-    serverAddress.sin_port = htons(8888); // 服务器端口号
+    serverAddress.sin_port = htons(8888);                   // 服务器端口号
 
     // 连接服务器
-    if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1) {
+    if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
+    {
         std::cerr << "Failed to connect to server" << std::endl;
         return -1;
     }
