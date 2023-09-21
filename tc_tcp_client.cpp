@@ -69,15 +69,15 @@ int main()
 
     while (true)
     {
-        // 发送 Person 结构体
+        // // 发送 Person 结构体
         MessageType type = PERSON;
-        type = (MessageType)htonl((unsigned int)type);
-        write(clientSocket, &type, sizeof(type));
+        // type = (MessageType)htonl((unsigned int)type);
+        // write(clientSocket, &type, sizeof(type));
 
-        Person person;
-        strncpy(person.name, "John", sizeof(person.name));
-        person.age = htonl(30);
-        write(clientSocket, &person, sizeof(person));
+        // Person person;
+        // strncpy(person.name, "John", sizeof(person.name));
+        // person.age = htonl(30);
+        // write(clientSocket, &person, sizeof(person));
 
         // 发送 Animal 结构体
         type = ANIMAL;
@@ -89,15 +89,15 @@ int main()
         animal.weight = htonf(222.555555f);
         write(clientSocket, &animal, sizeof(animal));
 
-        // 发送 Car 结构体
-        type = CAR;
-        type = (MessageType)htonl((unsigned int)type);
-        write(clientSocket, &type, sizeof(type));
+        // // 发送 Car 结构体
+        // type = CAR;
+        // type = (MessageType)htonl((unsigned int)type);
+        // write(clientSocket, &type, sizeof(type));
 
-        Car car;
-        strncpy(car.brand, "Toyota", sizeof(car.brand));
-        car.year = htonl(2022);
-        write(clientSocket, &car, sizeof(car));
+        // Car car;
+        // strncpy(car.brand, "Toyota", sizeof(car.brand));
+        // car.year = htonl(2022);
+        // write(clientSocket, &car, sizeof(car));
 
         std::this_thread::sleep_for(std::chrono::seconds(2));
     }
