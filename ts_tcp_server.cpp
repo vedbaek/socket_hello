@@ -1,3 +1,5 @@
+#include "message.h"
+
 #include <iostream>
 #include <cstring>
 #include <unistd.h>
@@ -68,7 +70,7 @@ void handleClient(int clientSocket)
 
             person.age = ntohl(person.age);
 
-            std::cout << clientSocket <<"Received Person: " << person.name << ", " << person.age << " years old" << std::endl;
+            std::cout << clientSocket <<" Received Person: " << person.name << ", " << person.age << " years old" << std::endl;
         }
         else if (type == ANIMAL)
         {
@@ -82,7 +84,7 @@ void handleClient(int clientSocket)
 
             animal.weight = ntohf(animal.weight);
 
-            std::cout << clientSocket << "Received Animal: " << animal.species << ", " << animal.weight << "kg" << std::endl;
+            std::cout << clientSocket << " Received Animal: " << animal.species << ", " << animal.weight << "kg" << std::endl;
         }
         else if (type == CAR)
         {
@@ -96,7 +98,7 @@ void handleClient(int clientSocket)
 
             car.year = ntohl(car.year);
 
-            std::cout << clientSocket << "Received Car: " << car.brand << ", " << car.year << std::endl;
+            std::cout << clientSocket << " Received Car: " << car.brand << ", " << car.year << std::endl;
         }
     }
 

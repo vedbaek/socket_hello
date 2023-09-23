@@ -2,6 +2,14 @@
 #define __MESSAGE_H__
 
 #include <cstdint> // uint32_t
+#include <random> // random_device
+
+int rand() {
+    static std::random_device rd;  // a seed source for the random number engine
+    static std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
+    static std::uniform_int_distribution<> distrib(1000, 9999);
+    return distrib(gen);
+}
 
 enum MsgType {
   TICK,
