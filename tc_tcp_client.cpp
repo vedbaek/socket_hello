@@ -7,13 +7,6 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
-
-float htonf(float value)
-{
-    uint32_t temp = htonl(*((uint32_t *)&value));
-    return *((float *)&temp);
-}
 
 // 结构体类型
 enum MessageType

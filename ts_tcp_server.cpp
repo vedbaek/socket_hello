@@ -5,12 +5,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <netinet/in.h> // hton/ntoh
-
-float ntohf(float value) {
-    uint32_t temp = ntohl(*((uint32_t *)&value));
-    return *((float *)&temp);
-}
+#include <thread>
 
 // 结构体类型
 enum MessageType
@@ -43,7 +38,7 @@ struct Car
 
 void handleClient(int clientSocket)
 {
-    char buffer[1024];
+        char buffer[1024];
     int bytesRead;
 
     while (true)
@@ -103,13 +98,14 @@ void handleClient(int clientSocket)
     }
 
     close(clientSocket);
-}
+    }
 
 int main()
 {
     int serverSocket, clientSocket;
     struct sockaddr_in serverAddress, clientAddress;
     socklen_t clientAddressLength;
+    pthread_t thread;
 
     // 创建套接字
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -141,6 +137,7 @@ int main()
     std::cout << "Server started, waiting for connections..." << std::endl;
 
     // 接受连接请求并处理客户端
+    std::vector<std::thread> thread_list;
     while (true)
     {
         clientAddressLength = sizeof(clientAddress);
@@ -155,7 +152,11 @@ int main()
         inet_ntop(AF_INET, &(clientAddress.sin_addr), clientIP, INET_ADDRSTRLEN);
         std::cout << "Connected with client: " << clientIP << std::endl;
 
-        handleClient(clientSocket);
+        thread_list.emplace_back(handleClient, clientSocket);
+    }
+
+    for(auto &t: thread_list) {
+        t.join();
     }
 
     // 关闭服务器套接字

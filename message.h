@@ -3,12 +3,18 @@
 
 #include <cstdint> // uint32_t
 #include <random> // random_device
+#include <netinet/in.h> // hton/ntoh
 
 int rand() {
     static std::random_device rd;  // a seed source for the random number engine
     static std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
     static std::uniform_int_distribution<> distrib(1000, 9999);
     return distrib(gen);
+}
+
+float ntohf(float value) {
+    uint32_t temp = ntohl(*((uint32_t *)&value));
+    return *((float *)&temp);
 }
 
 enum MsgType {
